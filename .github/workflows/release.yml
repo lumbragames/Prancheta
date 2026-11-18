@@ -1,0 +1,24 @@
+# Publica o prancheta.apk como download sempre que ele for atualizado.
+name: Publicar APK
+
+on:
+  push:
+    branches: [main]
+    paths: [prancheta.apk]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Prancheta versão ${{ github.run_number }}
+          body: Baixe o arquivo **prancheta.apk** abaixo e instale no Android. Para atualizar, instale por cima da versão antiga (sua carreira continua salva).
+          files: prancheta.apk
+          make_latest: true
