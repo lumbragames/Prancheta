@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prancheta · Lumbra Games</title>
-<meta name="description" content="Prancheta: jogo de treinador de futebol para Android. Comece no sub-20 e construa sua lenda.">
+<meta name="description" content="Prancheta 3.0: jogo de treinador de futebol para Android, agora com partida em 3D. Comece no sub-20 e construa sua lenda.">
 <meta name="theme-color" content="#050d09">
 <link rel="canonical" href="https://lumbragames.github.io/Prancheta/">
 <meta name="author" content="Lumbra Games">
@@ -184,6 +184,20 @@ footer .lb{font-family:var(--display);font-size:26px;letter-spacing:.3em;color:v
 
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
 
+
+/* novidades 3.0 */
+.v3{display:inline-flex;align-items:center;gap:6px;margin-left:8px;font-size:11px;font-weight:800;letter-spacing:.1em;padding:6px 10px;border-radius:99px;background:linear-gradient(135deg,var(--gold),#ff9f1a);color:#2a1a00;animation:pop 2s 2.4s ease-in-out infinite}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.news{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
+.nw{position:relative;padding:16px 14px;border-radius:18px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+.nw.big{grid-column:1/-1;background:linear-gradient(135deg,rgba(61,220,132,.16),rgba(245,197,66,.1));border-color:rgba(61,220,132,.35)}
+.nw .e{font-size:26px;display:block;margin-bottom:8px;animation:bob 2.4s ease-in-out infinite}
+.nw:nth-child(even) .e{animation-delay:-1.2s}
+.nw b{display:block;font-size:15px;line-height:1.25;margin-bottom:3px}
+.nw small{color:var(--muted);font-size:13px;line-height:1.35;display:block}
+.nw .new{position:absolute;top:10px;right:10px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--gold)}
+.nw.big::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.12),transparent);transform:skewX(-20deg);animation:shine 4s 1s infinite}
+
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -202,7 +216,7 @@ footer .lb{font-family:var(--display);font-size:26px;letter-spacing:.3em;color:v
   <div class="lights"><span></span><span></span></div>
   <svg id="board" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
   <div class="hero-in">
-    <span class="kicker"><i class="live"></i> Lumbra Games apresenta</span>
+    <span class="kicker"><i class="live"></i> Lumbra Games apresenta</span><span class="v3">NOVO · 3.0</span>
     <h1 id="title" aria-label="Prancheta"></h1>
     <p class="lead">Comece no sub-20. Chegue ao topo. Monte o elenco, mexa na tática, negocie cada contrato e escreva a sua lenda no futebol.</p>
     <div class="cta-wrap">
@@ -217,6 +231,27 @@ footer .lb{font-family:var(--display);font-size:26px;letter-spacing:.3em;color:v
 </header>
 
 <div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+
+
+<!-- NOVIDADES 3.0 -->
+<section>
+  <div class="rv">
+    <p class="label">Versão 3.0</p>
+    <h2>A maior<br><em>atualização.</em></h2>
+    <p class="sub">O Prancheta ficou muito maior. Veja o que chegou:</p>
+  </div>
+  <div class="news">
+    <div class="nw big rv"><span class="new">NOVO</span><span class="e">🏟️</span><b>Partida em 3D</b><small>Veja seu time em campo com gráficos 3D, ou troque para o modo 2D quando quiser.</small></div>
+    <div class="nw rv"><span class="new">NOVO</span><span class="e">⚡</span><b>Lances decisivos</b><small>Você joga os momentos que decidem a partida.</small></div>
+    <div class="nw rv"><span class="new">NOVO</span><span class="e">🏆</span><b>Premiações animadas</b><small>Bola de Ouro, craque da liga e seleção do campeonato.</small></div>
+    <div class="nw rv"><span class="new">NOVO</span><span class="e">📊</span><b>Estatísticas avançadas</b><small>xG, mapa de calor, rede de passes e VAR.</small></div>
+    <div class="nw rv"><span class="new">NOVO</span><span class="e">🎙️</span><b>Coletiva e vestiário</b><small>Fale com a imprensa e motive o time no intervalo.</small></div>
+    <div class="nw rv"><span class="new">NOVO</span><span class="e">🌍</span><b>Comece onde quiser</b><small>Qualquer clube e divisão, no sub-20 ou no profissional.</small></div>
+    <div class="nw rv"><span class="new">NOVO</span><span class="e">⭐</span><b>Gerações de ouro</b><small>Bases que revelam craques, capitão e líderes do vestiário.</small></div>
+    <div class="nw rv"><span class="new">NOVO</span><span class="e">🎨</span><b>Visual novo</b><small>Tema com as cores do clube, modo claro e escuro, cartas de jogador.</small></div>
+    <div class="nw rv"><span class="new">NOVO</span><span class="e">🏅</span><b>Legado</b><small>Rival pessoal, sala de troféus, mural de lendas e aposentadoria.</small></div>
+  </div>
+</section>
 
 <!-- CARREIRA -->
 <section>
