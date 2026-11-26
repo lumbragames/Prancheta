@@ -1,0 +1,4 @@
+{
+  "kit_ouro": { "brl": 24.9, "pf": 300, "items": ["fr_ouro", "em_aguia"], "t": "Kit Ouro" },
+  "kit_lenda": { "brl": 99.9, "pf": 1000, "items": ["fr_lenda", "em_dragao", "ban_ouro"], "t": "Kit Lenda" }
+}

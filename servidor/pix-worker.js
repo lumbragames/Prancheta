@@ -3,13 +3,21 @@
 // com o "Access Token" de produção do Mercado Pago (Configurações → Variáveis e segredos).
 // Rotas: GET /ping · POST /pix {pack, uid} · GET /status?id=...
 
-const PACKS = {
+// Os pacotes ficam também em packs.json no site da Lumbra; assim dá para criar pacotes novos sem mexer aqui.
+const PACKS_URL = 'https://lumbragames.github.io/Prancheta/servidor/packs.json';
+const BASE = {
   p100: { brl: 4.9, pf: 100, t: '100 Pranfixas' },
   p330: { brl: 12.9, pf: 330, t: '330 Pranfixas' },
   p800: { brl: 24.9, pf: 800, t: '800 Pranfixas' },
   p1900: { brl: 49.9, pf: 1900, t: '1900 Pranfixas' },
   vip30: { brl: 9.9, vip: 30, t: 'Sócio Prancheta 30 dias' },
 };
+let CACHE = null, CACHE_T = 0;
+async function packs() {
+  if (CACHE && Date.now() - CACHE_T < 300e3) return CACHE;
+  try { const r = await fetch(PACKS_URL, { cf: { cacheTtl: 300 } }); const j = await r.json(); CACHE = { ...BASE, ...(j && typeof j === 'object' ? j : {}) }; } catch { CACHE = { ...BASE }; }
+  CACHE_T = Date.now(); return CACHE;
+}
 const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' };
 const J = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'Content-Type': 'application/json', ...CORS } });
 
@@ -19,10 +27,10 @@ export default {
     const url = new URL(req.url); const MP = 'https://api.mercadopago.com/v1/payments';
     const auth = { Authorization: 'Bearer ' + (env.MP_TOKEN || '') };
     try {
-      if (url.pathname === '/ping') return J({ ok: true, token: !!env.MP_TOKEN });
+      if (url.pathname === '/ping') return J({ ok: true, token: !!env.MP_TOKEN, v: 2 });
       if (url.pathname === '/pix' && req.method === 'POST') {
         if (!env.MP_TOKEN) return J({ error: 'servidor sem MP_TOKEN' }, 500);
-        const b = await req.json().catch(() => ({})); const pk = PACKS[b.pack];
+        const b = await req.json().catch(() => ({})); const PACKS = await packs(); const pk = PACKS[b.pack];
         if (!pk) return J({ error: 'pacote inválido' }, 400);
         const uid = String(b.uid || 'anon').replace(/[^\w-]/g, '').slice(0, 40) || 'anon';
         const exp = new Date(Date.now() + 30 * 60e3).toISOString().replace('Z', '-00:00');
@@ -38,9 +46,9 @@ export default {
         const id = String(url.searchParams.get('id') || '').replace(/\D/g, ''); if (!id) return J({ error: 'id' }, 400);
         const r = await fetch(`${MP}/${id}`, { headers: auth }); const p = await r.json();
         if (!r.ok) return J({ status: 'unknown' });
-        const [pack] = String(p.external_reference || '').split('|'); const pk = PACKS[pack];
+        const [pack] = String(p.external_reference || '').split('|'); const PACKS = await packs(); const pk = PACKS[pack];
         // só entrega se o valor pago bate com o pacote
-        if (p.status === 'approved' && pk && Math.abs((p.transaction_amount || 0) - pk.brl) < 0.01) return J({ status: 'approved', pack, pf: pk.pf || 0, vip: pk.vip || 0, brl: pk.brl });
+        if (p.status === 'approved' && pk && Math.abs((p.transaction_amount || 0) - pk.brl) < 0.01) return J({ status: 'approved', pack, pf: pk.pf || 0, vip: pk.vip || 0, items: pk.items || [], brl: pk.brl });
         return J({ status: p.status || 'pending' });
       }
       return J({ error: 'rota' }, 404);
