@@ -1,0 +1,8 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Servidor do Pix · Prancheta</title><meta name="robots" content="noindex">
+<style>body{font:16px system-ui;background:#0b1210;color:#e8f1ec;margin:0;padding:20px}button{font:700 18px system-ui;width:100%;padding:16px;border:0;border-radius:14px;background:#2fe08a;color:#04120b;margin:10px 0}pre{white-space:pre-wrap;word-break:break-all;font-size:11px;background:#ffffff0d;padding:10px;border-radius:10px;max-height:40vh;overflow:auto}#ok{color:#2fe08a;font-weight:700;text-align:center}</style></head>
+<body><h2>Código do servidor do Pix</h2><p>Toque no botão, depois vá no Cloudflare e cole no editor do Worker.</p>
+<button id="b">Copiar código</button><div id="ok"></div><pre id="c">Carregando…</pre>
+<script>
+fetch('pix-worker.js',{cache:'no-store'}).then(r=>r.text()).then(t=>{document.getElementById('c').textContent=t;
+document.getElementById('b').onclick=async()=>{try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}document.getElementById('ok').textContent='Copiado! Agora cole no Cloudflare.'}});
+</script></body></html>
